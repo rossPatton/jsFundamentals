@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>Javascript Fundamentals</title>
+
+  <!-- Required stylesheet -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="screen" href="core/deck.core.css">
+
+  <!-- Extension CSS files go here. Remove or add as needed. -->
+  <link rel="stylesheet" media="screen" href="extensions/goto/deck.goto.css">
+  <link rel="stylesheet" media="screen" href="extensions/menu/deck.menu.css">
+  <link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
+  <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/style/web-2.0.css">
+
+  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="themes/transition/horizontal-slide.css">
+
+  <!-- Basic black and white print styles -->
+  <link rel="stylesheet" media="print" href="core/print.css">
+
+  <!-- Required Modernizr file -->
+  <script src="modernizr.custom.js"></script>
+</head>
+<body>
+  <div class="deck-container">
+
+    <!-- Begin slides. Just make elements with a class of slide. -->
+
+    <section class="slide">
+      <h1>Let's Talk About <span class='red'>JS</span></h1>
+    </section>
+
+    <section class="slide">
+      <h2>Here's whats comin:</h2>
+      <ul>
+        <li> What is Javascript? </li>
+        <li> Basic Concepts </li>
+        <li> Scope & Closure </li>
+        <li> Callbacks and Lambda Expressions </li>
+        <li> Prototypical Inheritance </li>
+      </ul>
+      <img class='full-width' src='themes/img/yougonnalearn.gif' />
+    </section>
+
+    <section class="slide">
+      <h2>Javascript Is:</h2>
+      <ul>
+        <li>Dynamic as opposed to Static</li>
+        <li>Loosely typed as opposed to Strictly typed</li>
+        <li>Weakly typed as opposed to Strongly typed</li>
+        <li>Prototypical as opposed to Classical</li>
+        <li>Functionally Scoped as opposed to Lexically Scoped</li>
+        <li>High Level as opposed to Low Level</li>
+        <li>Object Oriented with a dash of Functional</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>BUT WHAT DOES IT MEAN?</h2>
+      <img src='themes/img/repeatThat.jpg' />
+    </section>
+
+    <section class="slide">
+     <h2>Dynamic</h2>
+     <ul>
+       <li>Dynamic means the code does not need to be pre-compiled to run</li>
+       <li>Many tasks that other languages do during compilation are done during runtime</li>
+       <li>Dynamic languages are easier to work with, but more error prone</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Loose</h2>
+     <ul>
+       <li>Dynamic languages are loosely typed: type is figured out at runtime</li>
+       <li>Variables, Functions, etc do not need to specify a type</li>
+       <li>JS has types! (we have typeof for a reason). The loosely typed system and lack of annotations just hides these details from you. I think this is a bad thing, personally</li>
+       <li>JS primitive types are: Boolean, Null, Undefined, Number, String, Symbol (ES6 only)</li>
+       <li>And Object</li>
+       <li>Arrays are not a type in JS, technically. They are just objects.</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Weak</h2>
+     <ul>
+       <li>Types can be changed on a whim, via casting or coercion</li>
+       <li>JS won't care if you change your int 5 to a float 5.5, they're all numbers to js </li>
+       <li>You can even changes numbers to strings and vice versa, and the only error you'll get is if you try to use the wrong method on them. A tool like flow, or just basic type checking, can prevent this problem</li>
+       <li>You've done type coercion if you've ever used a number or string method</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Prototypical</h2>
+     <ul>
+       <li>The big one, the most important, and the most misunderstood</li>
+       <li>Most languages are Class based, javascript is not</li>
+       <li>This is a good thing, but unfortunately the implementation of Prototypes in JS is not exactly user friendly</li>
+       <li>Every object in JS is part of a prototype chain, and has a prototype</li>
+       <li>Prototypes are just Objects (see a theme yet)</li>
+       <li>2 Types of Prototypes: Delegates and Mixins</li>
+       <li>Delegates persist across all instances of a thing, Mixins are just copies</li>
+       <li>When you create a new Array, it inherits the Delegate prototype of the Array object, gaining access to all Array methods in the process</li>
+     </ul>
+     <img src='themes/img/prototype.png' />
+    </section>
+
+    <section class="slide">
+     <h2>Functionally Scoped</h2>
+     <ul>
+       <li>Most languages are block scoped, not function scoped</li>
+       <li>In JS only Functions can create scope, if, else, etc do not</li>
+       <li>This will change in ES6, JS will also have Lexical scope as well as Function scope</li>
+       <li>You can actually see scope, just use console.dir on a function</li>
+     </ul>
+     <img src='themes/img/scope.png' />
+    </section>
+
+    <section class="slide">
+     <h2>High Level</h2>
+     <ul>
+       <li>The technical details of the computer are abstracted away from you</li>
+       <li>Basically, you don't have to manage memory, or interact directly with hardware, etc</li>
+       <li>By nature all Dynamic languages are high level</li>
+       <li>High level languages: Javascript, Ruby, Python, PHP, Go</li>
+       <li>Low level languages: C, Lisp, Rust, Nim, Swift (sorta)</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Object Oriented</h2>
+     <ul>
+       <li>Everything except for type primitives in JS is an object. EVERYTHING ( except undefined )</li>
+       <li>JS coerces number, string, boolean primitives to Objects. undefined is the exception</li>
+       <li>Numbers? Objects. Functions? Objects. Arrays? Objects Strings? Objects</li>
+       <li>Think back to the slide on prototypical inheritance</li>
+       <li>This is why myNum.toString() works</li>
+     </ul>
+     <img src='themes/img/objects.jpg' />
+    </section>
+
+    <section class="slide">
+     <h2>Scope, Closure, and Context</h2>
+     <ul>
+        <li><b>Scope:</b> Is created by a Function (in ES5, in ES6 JS is also lexical)</li>
+        <li><b>Closure:</b>
+          <ul>
+            <li>Is when you have scope within scope (ie, functions within functions)</li>
+            <li>Closures inherit the scope of their parent function, allowing you to share variables between scopes</li>
+            <li>Using Closures to create privileged and private variables/functions is a very common pattern</li>
+          </ul>
+        </li>
+        <li><b>Context:</b> Is the value of the this keyword, which i'm gonna need another slide to explain</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+     <h2>This</h2>
+     <ul>
+       <li><b>This</b> behaves weirdly in javascript compared to other languages</li>
+       <li>By default it refers to the window or global object, and with <code>'use strict'</code> on it returns undefined</li>
+       <li>Other than that, it's value depends on where and how it's used</li>
+       <li><b>This</b> called in a function refers to where the function was called, not the internal scope of the function</li>
+       <li>Yet when used inside an object literal it works as expected, referring to the object</li>
+       <li>There are so many exceptions and rules i'll just refer you to the MDN page on it</li>
+     </ul>
+     <img src='themes/img/this.jpg' />
+    </section>
+
+    <section class="slide">
+     <h2>Callbacks and Lambdas</h2>
+     <ul>
+       <li>Javascript supports <b>Closures</b>, <b>Functions as Objects</b>, <b>Higher Order Functions</b> and <b>Lambdas</b></li>
+       <li>aka First Class Functions, or Functional Programming, depending on who you talk to</li>
+       <li><b>Higher Order Functions</b> are Functions that can take Functions as parameters</li>
+       <li><b>Lambda Expressions</b> is just when you can use a function's return as a value</li>
+     </ul>
+     <img src='themes/img/callback.png' />
+     <img src='themes/img/lambda.png' />
+    </section>
+
+    <section class="slide">
+     <h2>So How Do Callbacks work anyway?</h2>
+     <ul>
+       <li>I'm glad you asked Little Jimmy</li>
+       <li>A callback is just a function, used as a parameter in another function</li>
+       <li>It's basically just a pattern, often used to handle the result of some previous action</li>
+       <li>Promises will prolly replace Callbacks for async, but callbacks will always have their uses</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Prototypical Inheritance</h2>
+     <ul>
+       <li>From Wiki:</li>
+       <li><blockquote>Prototype-based programming is a style of object-oriented programming in which behaviour reuse (known as inheritance) is performed via a process of cloning existing objects that serve as prototypes. This model can also be known as prototypal, prototype-oriented, classless, or instance-based programming.</blockquote></li>
+       <li>You can create a Class system with Prototypes. You cannot create Prototypes with Classes.</li>
+       <li>You use it all the time, whether you realize it or not.</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Prototypical Inheritance 2</h2>
+     <ul>
+       <li>A Prototype then is just a re-usable object available to all instances of something.</li>
+       <li>If you create a new jQuery object, you have access to all of jQuery's methods.</li>
+       <li>If you create a new Array, you have access to all Array methods ( slice, forEach, etc )</li>
+       <li>If you create a new HTMLElement, you have access to the DOM methods ( .getElementBy etc etc )</li>
+       <li>This kind of Prototype is called a Delegate Prototype</li>
+     </ul>
+     <img src='themes/img/jquery.png' />
+    </section>
+
+    <section class="slide">
+     <h2>Prototypical Inheritance 3</h2>
+     <ul>
+       <li>Everything in Javascript descends from the Object prototype (its Objects all the way down)</li>
+       <li>All prototypes inherit the methods and properties of the prototype above them</li>
+       <li>This is called the Prototype Chain, the example below is a DIV from the DOM api</li>
+       <li>Object -> EventTarget -> Node -> Element -> HTMLElement -> HTMLDivElement</li>
+       <li>Altering the prototypes of existing Objects is considered bad practice</li>
+       <li>If we changed what <code>Array.slice()</code> did for instance, we could potentially break everything in the app that relied on Array.slice()</li>
+       <li>Despite what I literally just typed above: altering the prototype like this is what a lot of polyfills are actually doing, although smart ones fallback to the native if available</li>
+     </ul>
+    </section>
+
+    <section class="slide">
+     <h2>Prototypical Inheritance 4</h2>
+     <ul>
+       <li>For one off inheritance, you can also just straight up copy objects</li>
+       <li>This approach is called a Mixin</li>
+       <li>When you use a library's extend function, this is usually what they're doing</li>
+       <li>You can combine the two techniques, or just copy from many objects if you want</li>
+       <li>What happens if you copy an object and the keys conflict with another object's? Shit breaks, sorry</li>
+       <li>This is easily avoided with proper scoping though</li>
+       <li>A Prototypical Inheritance library like Stampit makes all the above very very easy</li>
+     </ul>
+     <!-- <img class='full-width' src='themes/img/hacking.gif' /> -->
+    </section>
+
+    <section class="slide">
+      <h2>Thats it, we're done now</h2>
+      <ul>
+        <li> What should I talk about next?</li>
+        <li> Option 1: The DOM </li>
+        <li> Option 2: Phoenix Front End Overview #2 </li>
+        <li> Option 3: Browserify / ES6 / FutureLyfe </li>
+        <li> Option 4: Javascript Unit Testing </li>
+      </ul>
+    </section>
+
+
+    <!-- End slides. -->
+
+    <!-- Begin extension snippets. Add or remove as needed. -->
+
+    <!-- deck.navigation snippet -->
+    <!-- <div aria-role="navigation">
+      <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+      <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+    </div> -->
+
+    <!-- deck.status snippet -->
+    <p class="deck-status" aria-role="status">
+      <span class="deck-status-current"></span>
+      /
+      <span class="deck-status-total"></span>
+    </p>
+
+    <!-- deck.goto snippet -->
+    <form action="." method="get" class="goto-form">
+      <label for="goto-slide">Go to slide:</label>
+      <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+      <datalist id="goto-datalist"></datalist>
+      <input type="submit" value="Go">
+    </form>
+
+    <!-- End extension snippets. -->
+  </div>
+
+<!-- Required JS files. -->
+<script src="jquery.min.js"></script>
+<script src="core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+  $(function() {
+    $.deck('.slide');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prototypes</title>
+</head>
+<body>
+
+<div class='test test-0'></div>
+<div class='test test-1'></div>
+<div class='test test-2'></div>
+<div class='test test-3'></div>
+<div class='test test-4'></div>
+<div class='test test-5'></div>
+
+
+<script>
+	var arr = [ 1, 2, 3, 4, 5 ];
+	console.dir( arr );
+
+	// in modern browsers, we can use __proto__ to directly access the delegate prototype chain
+	var obj = {};
+	console.dir( obj );
+	console.dir( obj.__proto__ );
+	console.dir( Object.getPrototypeOf( obj ) );
+
+
+	// otherwise we can use the prototype property with functions
+	// use to set default values
+	// this is a mixin basically, but it might help to think of it like a constructor
+	// testFn for instance, has access to the delegate prototype all Functions have access to
+	// but now, at instantiation, we are adding a custom prototype that exists only on testFn
+	// we can always edit any part of the prototype at anytime, after instantiation
+	// or even just add properties directly, since it's just an object
+	function testFn() {}
+	testFn.prototype.customProperty = 'testValue';
+	console.dir( testFn );
+	console.dir( testFn.__proto__ );
+	console.dir( Object.getPrototypeOf( testFn ) );
+
+
+	// bad example but you get it...
+	function Constructor() {
+		this.a = 5;
+		this.b = 5;
+		this.name = 'Test';
+	};
+	// remember how this works inside a method...
+	Constructor.prototype = {
+		add: function() {
+			return this.a + this.b;
+		}
+	};
+
+	var mc = new Constructor(); // you would never want to do this
+	console.log( mc.add() ); // 10
+	console.dir( mc );
+
+
+
+	// a more modern example
+	var testPrototype = {
+		a: 5,
+		b: 5,
+		add: function() {
+			return this.a + this.b;
+		}
+	};
+
+	var newThing = Object.create( testPrototype );
+	console.log( newThing.add() ); // 10
+	console.dir( newThing );
+
+
+	// not all modern browsers support forEach, so lets polyfill it
+	// this is super basic, btw, also dont this
+	// also this would be more complicated if it was a real polyfill
+	// im effectively overwriting the default forEach here, and replacing with my own
+	// a real polyfill for instance, would do a quick if check first
+	Array.prototype.forEach = function( callback ) {
+		var i = 0,
+			len = this.length;
+
+		for( i; i < len; i++ ) {
+			callback( this[i], i, this );
+		}
+	};
+
+	var newArray = [ 'test1', 'test2', 'test3', 'test4', 'test5' ];
+	console.dir( '\n\narray for each: ', newArray );
+	// to show that it's running my code now instead of native
+	// you should see the console logs ( 1, 2, 3, 4, 5 )
+	newArray.forEach(function( val, i, originalArray ) {
+		console.log( val );
+		console.log( i );
+	});
+
+	// a smarter way would check for existence first, to prevent cobblering a global method
+	// i hate that nodelists dont support forEach, so lets polyfill that too
+	if ( typeof NodeList.prototype.forEach === 'undefined' ) {
+		NodeList.prototype.forEach = function( callback ) {
+			var i = 0,
+				len = this.length;
+
+			for( i; i < len; i++ ) {
+				callback( this[i], i, this );
+			}
+		};
+	}
+	var newNodeList = document.querySelectorAll('div');
+	console.dir( '\n\nnodelist: ', newNodeList );
+	// to show that it's running my code now instead of native
+	// you should see the console logs ( 1, 2, 3, 4, 5 )
+	newNodeList.forEach(function( val, i, originalArray ) {
+		console.log( val );
+		console.log( i );
+	});
+
+
+	// how would we use this in real lyfe?
+	// in a library, obvs
+	// lets make a quick, useless, jquery knockoff
+	// everytime you use jquery, it returns itself, thats all it does
+	// this is why every selector you create has access to all of jquery
+	// this is why you can chain selectors
+	var fakeProto = {
+		fn: function( selector ) {
+			var selection = document.querySelectorAll( selector );
+			this.selection = selection;
+			return this;
+		},
+		addClass: function( className ) {
+			if ( this.selection.length === 0 ) {
+				throw Error( 'no selection possible' );
+			}
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				if ( !this.selection[i].classList.contains( className ) ) {
+					this.selection[i].className += ' ' + className;
+				}
+			}
+
+			return this;
+		},
+		each: function( callback ) {
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				callback( this.selection[i], i, this.selection );
+			}
+		},
+		removeClass: function( className ) {
+			if ( this.selection.length === 0 ) {
+				throw Error( 'no selection possible' );
+			}
+
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				if ( this.selection[i].classList.contains( className ) ) {
+					this.selection[i].classList.remove( className );
+				}
+			}
+
+			return this;
+		}
+	};
+
+	var fakeQuery = $ = Object.create( fakeProto );
+	console.dir( $.fn('.test') );
+
+	// $.fn('.test')
+	// 	.addClass('newClassForTest')
+	// 	.removeClass('test');
+
+	// $.fn('.newClassForTest').each(function( val, i, orig ) {
+	// 	console.log( val );
+	// 	console.log( i );
+	// 	// if even
+	// 	if ( i % 2 !== 0 ) {
+	// 		val.className = '';
+	// 	}
+	// });
+</script>
+</body>
+</html>

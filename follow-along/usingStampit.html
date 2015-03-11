@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Prototypes</title>
+</head>
+<body>
+
+<div class='odd'></div>
+<div class='even'></div>
+<div class='odd'></div>
+<div class='even'></div>
+<div class='odd'></div>
+<div class='even'></div>
+
+
+<script src='lib/stampit.min.js'></script>
+<script>
+	// i've found that stampit has the best approach (that ive seen so far)
+	// when it comes to working with prototypes
+	// it doesn't attempt to copy class based inheritance, and it makes prototypes actually easy
+	// it makes it so easy i had to struggle a bit when doing the basic prototype examples
+	// cause im so used to using stampit
+
+
+	// mixin prototype
+	var evensConfig = stampit().state({
+		config: {
+			'evens': true,
+			'odds': false
+		}
+	});
+
+
+	var oddsConfig = stampit().state({
+		config: {
+			'evens': false,
+			'odds': true
+		}
+	});
+
+
+	var allConfig = stampit().state({
+		config: {
+			'evens': true,
+			'odds': true
+		}
+	});
+
+
+	var otherState = stampit().state({
+		state: {
+			'count': 0
+		}
+	});
+
+
+	// delegate prototype
+	var classMethods = stampit().methods({
+		addClass: function( className ) {
+			if ( this.selection.length === 0 ) {
+				throw Error( 'no selection possible' );
+			}
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				if ( !this.selection[i].classList.contains( className ) ) {
+					this.selection[i].className += ' ' + className;
+				}
+			}
+
+			return this;
+		},
+		removeClass: function( className ) {
+			if ( this.selection.length === 0 ) {
+				throw Error( 'no selection possible' );
+			}
+
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				if ( this.selection[i].classList.contains( className ) ) {
+					this.selection[i].classList.remove( className );
+				}
+			}
+
+			return this;
+		}
+	});
+
+	// arbitrary additional object just because
+	var otherMethods = stampit().methods({
+		fn: function( selector ) {
+			var selection = document.querySelectorAll( selector );
+			this.selection = selection;
+			return this;
+		},
+		each: function( callback ) {
+			var i = 0,
+				len = this.selection.length;
+
+			for( i; i < len; i++ ) {
+				callback( this.selection[i], i, this.selection );
+			}
+		}
+	});
+
+
+	// function prototype
+	var init = stampit().enclose(function () {
+		if ( this.config.odds && this.config.evens ) {
+			return this.fn('.odd, .even').addClass('testStampit');
+		}
+		else if ( this.config.odds ) {
+			return this.fn('.odd').addClass('testStampit');
+		}
+		else if ( this.config.evens ) {
+			return this.fn('.even').addClass('testStampit');
+		}
+	});
+
+
+	// function prototype
+	var otherInit = stampit().enclose(function () {
+		// so very arbitrary
+		this.fn('.odd').each(function( val, i ) {
+			this.state.count = i;
+		}.bind( this ));
+	});
+
+
+	var Evens = stampit().compose(
+		evensConfig,
+		otherMethods,
+		classMethods,
+		init
+	).create();
+
+	var Odds = stampit().compose(
+		oddsConfig,
+		otherMethods,
+		classMethods,
+		init
+	).create();
+
+	var All = stampit().compose(
+		allConfig,
+		otherMethods,
+		classMethods,
+		init
+	).create();
+
+	var Other = stampit().compose(
+		otherState,
+		otherMethods,
+		otherInit
+	).create();
+
+
+	console.dir( 'evens: ', Evens );
+	console.dir( 'odds: ', Odds );
+	console.dir( 'all: ', All );
+	console.dir( 'evens again: ', Evens );
+	console.dir( Other );
+</script>
+</body>
+</html>
